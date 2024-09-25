@@ -1,18 +1,12 @@
 import { useState } from "react";
 
 const App = () => {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
-  const [all, setAll] = useState(0);
-  const [punctuation, setPunctuation] = useState(0);
-
   const [data, setData] = useState({
     good: 0,
     neutral: 0,
     bad: 0,
     all: 0,
-    punctuation: 0,
+    punctuation: null,
   });
 
   const newGood = () => {
@@ -53,18 +47,43 @@ const App = () => {
 };
 
 const Button = ({ text, onSmash }) => <button onClick={onSmash}>{text}</button>;
+const StatisticLine = ({ text, value }) => (
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
+);
 
-const Statistics = ({data}) => {
-  return (
+const Statistics = ({ data }) => {
+  return data.punctuation !== null ? (
     <div>
       <h2>Statistics</h2>
-      <p>Good {data.good}</p>
-      <p>Neutral {data.neutral}</p>
-      <p>Bad {data.bad}</p>
-      <p>All {data.all}</p>
-      <p>Average {data.punctuation / data.all}</p>
-      <p>Positive {(data.good / data.all) * 100} %</p>
+
+      <div>
+        <h2>Statistics</h2>
+        <table>
+          <thead>
+            <tr>
+              <td>Description</td>
+              <td>Data</td>
+            </tr>
+          </thead>
+          <tbody>
+            <StatisticLine text="Good" value={data.good} />
+            <StatisticLine text="Neutral" value={data.neutral} />
+            <StatisticLine text="Bad" value={data.bad} />
+            <StatisticLine text="All" value={data.all} />
+            <StatisticLine text="Average" value={data.punctuation / data.all} />
+            <StatisticLine
+              text="Positive"
+              value={(data.good / data.all) * 100}
+            />
+          </tbody>
+        </table>
+      </div>
     </div>
+  ) : (
+    <p>No feedback given</p>
   );
 };
 
