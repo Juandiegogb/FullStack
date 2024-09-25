@@ -7,21 +7,38 @@ const App = () => {
   const [all, setAll] = useState(0);
   const [punctuation, setPunctuation] = useState(0);
 
+  const [data, setData] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+    all: 0,
+    punctuation: 0,
+  });
+
   const newGood = () => {
-    setGood(good + 1);
-    setPunctuation(punctuation + 1);
-    setAll(all + 1);
+    setData({
+      ...data,
+      good: data.good + 1,
+      punctuation: data.punctuation + 1,
+      all: data.all + 1,
+    });
   };
 
   const newNeutral = () => {
-    setNeutral(neutral + 1);
-    setAll(all + 1);
+    setData({
+      ...data,
+      neutral: data.neutral + 1,
+      all: data.all + 1,
+    });
   };
 
   const newBad = () => {
-    setBad(bad + 1);
-    setPunctuation(punctuation - 1);
-    setAll(all + 1);
+    setData({
+      ...data,
+      bad: data.bad + 1,
+      punctuation: data.punctuation - 1,
+      all: data.all + 1,
+    });
   };
 
   return (
@@ -30,18 +47,25 @@ const App = () => {
       <Button text="Good" onSmash={newGood} />
       <Button text="Neutral" onSmash={newNeutral} />
       <Button text="Bad" onSmash={newBad} />
-
-      <h2>Statistics</h2>
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
-      <p>All {all}</p>
-      <p>Average {punctuation / all}</p>
-      <p>Positive {(good/all)*100} %</p>
+      <Statistics data={data} />
     </div>
   );
 };
 
 const Button = ({ text, onSmash }) => <button onClick={onSmash}>{text}</button>;
+
+const Statistics = ({data}) => {
+  return (
+    <div>
+      <h2>Statistics</h2>
+      <p>Good {data.good}</p>
+      <p>Neutral {data.neutral}</p>
+      <p>Bad {data.bad}</p>
+      <p>All {data.all}</p>
+      <p>Average {data.punctuation / data.all}</p>
+      <p>Positive {(data.good / data.all) * 100} %</p>
+    </div>
+  );
+};
 
 export default App;
